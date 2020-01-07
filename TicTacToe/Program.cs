@@ -2,7 +2,7 @@
 
 namespace TicTacToe
 {
-    class MainClass
+    class TicTacToeGame
     {
         static char[,] board = {
                 { '1', '2', '3' },
@@ -10,33 +10,18 @@ namespace TicTacToe
                 { '7', '8', '9' }
         };
 
-        static int turns;
+        private static int turns;
 
         public static void Main(string[] args)
         {
-            int player = 2;
+            int player = 1;
             int input = 0;
             bool correctInput = true;
             setBoard();
 
             do
             {
-                if (player == 2)
-                {
-                    player = 1;
-                    enterXorO('X', input);
-
-                }
-                else
-                {
-                    player = 2;
-                    enterXorO('O', input);
-                }
-
-                setBoard();
-
                 char[] playerChars = { 'X', 'O' };
-
                 foreach (char playerChar in playerChars)
                 {
                     if (((board[0, 0] == playerChar) && (board[0, 1] == playerChar) && (board[0, 2] == playerChar))
@@ -49,7 +34,7 @@ namespace TicTacToe
                         || ((board[0, 2] == playerChar) && (board[1, 2] == playerChar) && (board[2, 2] == playerChar))
                         )
                     {
-                        if (playerChar == 'O')
+                        if (playerChar == 'X')
                         {
                             Console.WriteLine("Player {0} has won!! Good Job Player 1", playerChar);
                         }
@@ -64,8 +49,7 @@ namespace TicTacToe
 
                         resetBoard();
                         break;
-                    }
-                    else if (turns == 10)
+                    } else if (turns == 9)
                     {
                         Console.WriteLine("The game ended in a draw");
                         Console.WriteLine("Enter any key to reset game");
@@ -77,6 +61,7 @@ namespace TicTacToe
 
                 do
                 {
+                    Console.WriteLine("Player {0}'s turn!", player);
                     Console.WriteLine("Player {0}: Pick a number", player);
                     try
                     {
@@ -103,7 +88,10 @@ namespace TicTacToe
                     
                 } while (!correctInput);
 
-                
+                changeBoard(player, input);
+                if (player == 1) player = 2;
+                else player = 1;
+                setBoard();
             } while (true);
         }
 
@@ -132,8 +120,12 @@ namespace TicTacToe
             turns++;
         }
 
-        public static void enterXorO(char playerChar, int input)
+        public static void changeBoard(int player, int input)
         {
+            char playerChar;
+            if (player == 1) playerChar = 'X';
+            else playerChar = 'O';
+
             switch (input)
             {
                 case 1:
